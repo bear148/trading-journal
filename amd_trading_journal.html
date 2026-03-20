@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMD Trading Journal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --border2: #333;
+    --text: #e8e8e8;
+    --text2: #888;
+    --text3: #555;
+    --green: #00c896;
+    --green-dim: #00c89620;
+    --red: #ff4d4d;
+    --red-dim: #ff4d4d20;
+    --amber: #f5a623;
+    --amber-dim: #f5a62320;
+    --blue: #4a9eff;
+    --blue-dim: #4a9eff15;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-left h1 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+
+  .header-left p {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    color: var(--text);
+  }
+
+  .btn:hover { border-color: var(--text2); background: var(--surface2); }
+  .btn-green { border-color: var(--green); color: var(--green); }
+  .btn-green:hover { background: var(--green-dim); }
+  .btn-red { border-color: var(--red); color: var(--red); }
+  .btn-red:hover { background: var(--red-dim); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-value.blue { color: var(--blue); }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: var(--text3);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+
+  .tab:hover { color: var(--text2); }
+  .tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+  /* FORM */
+  .form-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .form-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group.half { grid-column: span 2; }
+
+  label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  input, select, textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 8px 12px;
+    transition: border-color 0.15s;
+    outline: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus { border-color: var(--text3); }
+  textarea { resize: vertical; min-height: 70px; }
+
+  select option { background: var(--surface); }
+
+  /* CHECKLIST */
+  .checklist {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+
+  .checklist-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .check-row:last-child { border-bottom: none; }
+
+  .check-row input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    accent-color: var(--green);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .check-row span {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .check-row:has(input:checked) span { color: var(--green); }
+
+  /* OUTCOME BUTTONS */
+  .outcome-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .outcome-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .outcome-btn:hover { border-color: var(--text3); color: var(--text); }
+  .outcome-btn.selected-win { border-color: var(--green); background: var(--green-dim); color: var(--green); }
+  .outcome-btn.selected-loss { border-color: var(--red); background: var(--red-dim); color: var(--red); }
+  .outcome-btn.selected-skip { border-color: var(--amber); background: var(--amber-dim); color: var(--amber); }
+  .outcome-btn.selected-invalid { border-color: var(--blue); background: var(--blue-dim); color: var(--blue); }
+
+  .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+  /* SESSION LOG */
+  .log-panel { display: flex; flex-direction: column; gap: 10px; }
+
+  .session-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    transition: border-color 0.15s;
+  }
+
+  .session-card:hover { border-color: var(--border2); }
+  .session-card.win { border-left: 3px solid var(--green); }
+  .session-card.loss { border-left: 3px solid var(--red); }
+  .session-card.skip { border-left: 3px solid var(--amber); }
+  .session-card.invalid { border-left: 3px solid var(--blue); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .card-date {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-win { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .badge-loss { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+  .badge-skip { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+  .badge-invalid { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue); }
+
+  .card-body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .card-field label {
+    font-size: 9px;
+    color: var(--text3);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .card-field span {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .card-notes {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-checks {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .check-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text3);
+  }
+
+  .check-pill.checked { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 4px;
+    transition: color 0.15s;
+  }
+  .delete-btn:hover { color: var(--red); }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+  }
+
+  .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  /* RR display */
+  .rr-good { color: var(--green); }
+  .rr-bad { color: var(--red); }
+  .rr-neutral { color: var(--text2); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>AMD / Po3 — Backtest Journal</h1>
+    <p>EUR/USD · 5-min · New York session · Pacific Time</p>
+  </div>
+  <button class="btn btn-green" onclick="showTab('log'); document.getElementById('form-section').classList.remove('hidden')">+ Log Session</button>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-label">Sessions</div>
+    <div class="stat-value blue" id="stat-total">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Trades Taken</div>
+    <div class="stat-value" id="stat-trades">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Win Rate</div>
+    <div class="stat-value green" id="stat-winrate">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Correctly Skipped</div>
+    <div class="stat-value amber" id="stat-skipped">0</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Progress</div>
+    <div class="stat-value" id="stat-progress">0/20</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('log')">Session Log</div>
+  <div class="tab" onclick="showTab('rules')">My Rules</div>
+</div>
+
+<!-- LOG TAB -->
+<div id="tab-log">
+
+  <!-- FORM -->
+  <div class="form-panel hidden" id="form-section">
+    <div class="form-title">New Session Entry</div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Session Date</label>
+        <input type="date" id="f-date">
+      </div>
+      <div class="form-group">
+        <label>Day type at 6:00am</label>
+        <select id="f-daytype">
+          <option value="">Select...</option>
+          <option value="ranging">Ranging / sideways</option>
+          <option value="trending-bull">Trending — bullish</option>
+          <option value="trending-bear">Trending — bearish</option>
+          <option value="unclear">Unclear</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Opening range quality</label>
+        <select id="f-range">
+          <option value="">Select...</option>
+          <option value="tight">Tight & flat (good)</option>
+          <option value="moderate">Moderate chop</option>
+          <option value="wide">Wide & trending (bad)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- PRE-TRADE CHECKLIST -->
+    <div class="checklist">
+      <div class="checklist-title">Pre-trade checklist — all 3 required to enter</div>
+      <label class="check-row">
+        <input type="checkbox" id="c1">
+        <span>Price swept clearly below (or above) the opening range</span>
+      </label>
+      <label class="check-row">
+        <input type="checkbox" id="c2">
+        <span>Price snapped back inside the opening range (reversal confirmed)</span>
+      </label>
+      <label class="check-row">
+        <input type="checkbox" id="c3">
+        <span>Stop loss placed below fake move, target at previous day high/low</span>
+      </label>
+    </div>
+
+    <!-- OUTCOME -->
+    <div style="margin-bottom:8px">
+      <label style="display:block; margin-bottom:8px">Session outcome</label>
+      <div class="outcome-group">
+        <button class="outcome-btn" onclick="selectOutcome('win')">Win</button>
+        <button class="outcome-btn" onclick="selectOutcome('loss')">Loss</button>
+        <button class="outcome-btn" onclick="selectOutcome('skip')">Correctly skipped</button>
+        <button class="outcome-btn" onclick="selectOutcome('invalid')">No setup / trending</button>
+      </div>
+    </div>
+
+    <div class="form-grid" id="trade-fields">
+      <div class="form-group">
+        <label>Direction</label>
+        <select id="f-direction">
+          <option value="">—</option>
+          <option value="Long (buy)">Long (buy)</option>
+          <option value="Short (sell)">Short (sell)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Stop (pips)</label>
+        <input type="number" id="f-stop" placeholder="e.g. 8">
+      </div>
+      <div class="form-group">
+        <label>Target (pips)</label>
+        <input type="number" id="f-target" placeholder="e.g. 24">
+      </div>
+    </div>
+
+    <div class="form-group full" style="margin-bottom:16px">
+      <label>Notes — what did you observe? what would you do differently?</label>
+      <textarea id="f-notes" placeholder="e.g. Opening range was tight, manipulation swept below the low cleanly, snapped back with a strong green candle. Entered on the break back above range LOW. Price ran to previous day high for full target."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn" onclick="cancelForm()">Cancel</button>
+      <button class="btn btn-green" onclick="saveSession()">Save Session</button>
+    </div>
+  </div>
+
+  <!-- SESSION LIST -->
+  <div class="log-panel" id="session-list"></div>
+  <div class="empty hidden" id="empty-state">
+    <div class="empty-icon">📋</div>
+    No sessions logged yet.<br>Hit "+ Log Session" after each backtest replay.
+  </div>
+
+</div>
+
+<!-- RULES TAB -->
+<div id="tab-rules" class="hidden">
+  <div class="form-panel">
+    <div class="form-title">Your AMD Strategy Rules</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px">
+
+      <div>
+        <p style="font-family:var(--mono); font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px">Daily routine</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-family:var(--mono);color:var(--green);font-size:12px;min-width:60px">6:00am</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Open chart. Mark previous day high & low from daily candle. Observe only.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-family:var(--mono);color:var(--green);font-size:12px;min-width:60px">6:30am</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Draw opening range box. Capture every candle until 7:00am.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-family:var(--mono);color:var(--amber);font-size:12px;min-width:60px">7:00am</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Watch for manipulation. Do NOT enter. Wait for the sweep and reversal.</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-family:var(--mono);color:var(--blue);font-size:12px;min-width:60px">8:30am+</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Enter only after all 3 checklist rules confirmed. Set stop & target immediately.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-family:var(--mono); font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px">Trend day filters</p>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
+            <p style="font-size:12px;color:var(--text2);margin-bottom:4px">Yesterday's candle very large → caution</p>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
+            <p style="font-size:12px;color:var(--text2);margin-bottom:4px">Price already moving at 6:00am → likely trending</p>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
+            <p style="font-size:12px;color:var(--text2);margin-bottom:4px">Opening range candles slope one direction → skip</p>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
+            <p style="font-size:12px;color:var(--text2)">After sweep, no snapback in 2-3 candles → trending, exit plan</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="grid-column:1/-1; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:16px">
+        <p style="font-family:var(--mono); font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px">The golden rules</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <p style="font-size:13px;color:var(--amber)">1. A missed trade costs nothing. A bad trade costs real money.</p>
+          <p style="font-size:13px;color:var(--amber)">2. If all 3 checklist items aren't met — no trade. No exceptions.</p>
+          <p style="font-size:13px;color:var(--amber)">3. Set your stop loss before you enter. Every single time.</p>
+          <p style="font-size:13px;color:var(--amber)">4. Target minimum 2:1 reward to risk on every trade.</p>
+          <p style="font-size:13px;color:var(--amber)">5. Complete 20 backtested sessions before trading live.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let sessions = JSON.parse(localStorage.getItem('amd-journal') || '[]');
+  let selectedOutcome = '';
+
+  function save() {
+    localStorage.setItem('amd-journal', JSON.stringify(sessions));
+    render();
+  }
+
+  function showTab(tab) {
+    document.getElementById('tab-log').classList.toggle('hidden', tab !== 'log');
+    document.getElementById('tab-rules').classList.toggle('hidden', tab !== 'rules');
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'log') || (i === 1 && tab === 'rules'));
+    });
+  }
+
+  function selectOutcome(outcome) {
+    selectedOutcome = outcome;
+    document.querySelectorAll('.outcome-btn').forEach(b => {
+      b.className = 'outcome-btn';
+      if (b.textContent.toLowerCase().includes(outcome) || 
+          (outcome === 'skip' && b.textContent.includes('skip')) ||
+          (outcome === 'invalid' && b.textContent.includes('trending'))) {
+        b.classList.add('selected-' + outcome);
+      }
+    });
+    const showTrade = outcome === 'win' || outcome === 'loss';
+    document.getElementById('trade-fields').style.opacity = showTrade ? '1' : '0.3';
+  }
+
+  function cancelForm() {
+    document.getElementById('form-section').classList.add('hidden');
+    resetForm();
+  }
+
+  function resetForm() {
+    ['f-date','f-daytype','f-range','f-direction','f-stop','f-target','f-notes'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = '';
+      else el.value = '';
+    });
+    ['c1','c2','c3'].forEach(id => document.getElementById(id).checked = false);
+    selectedOutcome = '';
+    document.querySelectorAll('.outcome-btn').forEach(b => b.className = 'outcome-btn');
+  }
+
+  function saveSession() {
+    const date = document.getElementById('f-date').value;
+    if (!date) { alert('Please enter a session date.'); return; }
+    if (!selectedOutcome) { alert('Please select a session outcome.'); return; }
+
+    const stop = parseFloat(document.getElementById('f-stop').value) || 0;
+    const target = parseFloat(document.getElementById('f-target').value) || 0;
+    const rr = stop > 0 && target > 0 ? (target / stop).toFixed(1) : null;
+
+    const session = {
+      id: Date.now(),
+      date,
+      daytype: document.getElementById('f-daytype').value,
+      range: document.getElementById('f-range').value,
+      checks: [
+        document.getElementById('c1').checked,
+        document.getElementById('c2').checked,
+        document.getElementById('c3').checked
+      ],
+      outcome: selectedOutcome,
+      direction: document.getElementById('f-direction').value,
+      stop,
+      target,
+      rr,
+      notes: document.getElementById('f-notes').value
+    };
+
+    sessions.unshift(session);
+    save();
+    cancelForm();
+  }
+
+  function deleteSession(id) {
+    if (!confirm('Delete this session?')) return;
+    sessions = sessions.filter(s => s.id !== id);
+    save();
+  }
+
+  const checkLabels = [
+    'Price swept range',
+    'Snapped back inside',
+    'Stop & target set'
+  ];
+
+  const daytypeLabels = {
+    'ranging': 'Ranging', 'trending-bull': 'Trending ↑',
+    'trending-bear': 'Trending ↓', 'unclear': 'Unclear', '': '—'
+  };
+
+  const rangeLabels = {
+    'tight': 'Tight (good)', 'moderate': 'Moderate', 'wide': 'Wide (bad)', '': '—'
+  };
+
+  function render() {
+    // Stats
+    const total = sessions.length;
+    const trades = sessions.filter(s => s.outcome === 'win' || s.outcome === 'loss').length;
+    const wins = sessions.filter(s => s.outcome === 'win').length;
+    const skipped = sessions.filter(s => s.outcome === 'skip').length;
+    const winrate = trades > 0 ? Math.round((wins / trades) * 100) + '%' : '—';
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-trades').textContent = trades;
+    document.getElementById('stat-winrate').textContent = winrate;
+    document.getElementById('stat-winrate').className = 'stat-value ' + (trades > 0 ? (wins/trades >= 0.5 ? 'green' : 'red') : 'green');
+    document.getElementById('stat-skipped').textContent = skipped;
+    document.getElementById('stat-progress').textContent = total + '/20';
+    document.getElementById('stat-progress').className = 'stat-value ' + (total >= 20 ? 'green' : total >= 10 ? 'amber' : '');
+
+    // List
+    const list = document.getElementById('session-list');
+    const empty = document.getElementById('empty-state');
+
+    if (sessions.length === 0) {
+      list.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    empty.classList.add('hidden');
+    list.innerHTML = sessions.map(s => {
+      const rrClass = s.rr ? (parseFloat(s.rr) >= 2 ? 'rr-good' : 'rr-bad') : 'rr-neutral';
+      const checksHtml = checkLabels.map((l, i) =>
+        `<span class="check-pill ${s.checks[i] ? 'checked' : ''}">${l}</span>`
+      ).join('');
+
+      return `
+      <div class="session-card ${s.outcome}">
+        <div class="card-header">
+          <span class="card-date">${s.date}</span>
+          <div class="card-meta">
+            <span class="badge badge-${s.outcome}">${s.outcome === 'invalid' ? 'No setup' : s.outcome}</span>
+            <button class="delete-btn" onclick="deleteSession(${s.id})">×</button>
+          </div>
+        </div>
+        <div class="card-checks">${checksHtml}</div>
+        <div class="card-body">
+          <div class="card-field"><label>Day type</label><span>${daytypeLabels[s.daytype] || '—'}</span></div>
+          <div class="card-field"><label>Opening range</label><span>${rangeLabels[s.range] || '—'}</span></div>
+          <div class="card-field"><label>Direction</label><span>${s.direction || '—'}</span></div>
+          <div class="card-field"><label>R:R ratio</label><span class="${rrClass}">${s.rr ? s.rr + ':1' : '—'}</span></div>
+        </div>
+        ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // Set today's date as default
+  document.getElementById('f-date').valueAsDate = new Date();
+  render();
+</script>
+</body>
+</html>
