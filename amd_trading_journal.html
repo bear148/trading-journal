@@ -39,14 +39,15 @@
     padding: 24px;
   }
 
-  /* HEADER */
   .header {
     display: flex;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 32px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
+    gap: 16px;
+    flex-wrap: wrap;
   }
 
   .header-left h1 {
@@ -54,7 +55,6 @@
     font-size: 18px;
     font-weight: 500;
     letter-spacing: -0.5px;
-    color: var(--text);
   }
 
   .header-left p {
@@ -64,29 +64,64 @@
     font-family: var(--mono);
   }
 
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
   .btn {
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 500;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 4px;
     border: 1px solid var(--border2);
     cursor: pointer;
     transition: all 0.15s;
     background: transparent;
     color: var(--text);
+    white-space: nowrap;
   }
 
   .btn:hover { border-color: var(--text2); background: var(--surface2); }
   .btn-green { border-color: var(--green); color: var(--green); }
   .btn-green:hover { background: var(--green-dim); }
-  .btn-red { border-color: var(--red); color: var(--red); }
-  .btn-red:hover { background: var(--red-dim); }
+  .btn-amber { border-color: var(--amber); color: var(--amber); }
+  .btn-amber:hover { background: var(--amber-dim); }
+  .btn-blue { border-color: var(--blue); color: var(--blue); }
+  .btn-blue:hover { background: var(--blue-dim); }
 
-  /* STATS BAR */
+  /* BACKUP BANNER */
+  .backup-banner {
+    background: var(--surface);
+    border: 1px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .backup-banner p {
+    font-size: 12px;
+    color: var(--amber);
+    font-family: var(--mono);
+  }
+
+  .backup-banner .backup-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* STATS */
   .stats-bar {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 12px;
     margin-bottom: 28px;
   }
@@ -169,7 +204,6 @@
 
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group.full { grid-column: 1 / -1; }
-  .form-group.half { grid-column: span 2; }
 
   label {
     font-family: var(--mono);
@@ -194,10 +228,8 @@
 
   input:focus, select:focus, textarea:focus { border-color: var(--text3); }
   textarea { resize: vertical; min-height: 70px; }
-
   select option { background: var(--surface); }
 
-  /* CHECKLIST */
   .checklist {
     background: var(--bg);
     border: 1px solid var(--border);
@@ -235,23 +267,14 @@
     padding: 0;
   }
 
-  .check-row span {
-    font-family: var(--sans);
-    font-size: 13px;
-    color: var(--text2);
-  }
-
+  .check-row span { font-family: var(--sans); font-size: 13px; color: var(--text2); }
   .check-row:has(input:checked) span { color: var(--green); }
 
-  /* OUTCOME BUTTONS */
-  .outcome-group {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
+  .outcome-group { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 
   .outcome-btn {
     flex: 1;
+    min-width: 100px;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid var(--border);
@@ -272,7 +295,7 @@
 
   .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
 
-  /* SESSION LOG */
+  /* SESSION LIST */
   .log-panel { display: flex; flex-direction: column; gap: 10px; }
 
   .session-card {
@@ -296,17 +319,9 @@
     margin-bottom: 10px;
   }
 
-  .card-date {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
-  }
+  .card-date { font-family: var(--mono); font-size: 13px; font-weight: 500; }
 
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .card-meta { display: flex; align-items: center; gap: 12px; }
 
   .badge {
     font-family: var(--mono);
@@ -330,18 +345,8 @@
     margin-bottom: 10px;
   }
 
-  .card-field label {
-    font-size: 9px;
-    color: var(--text3);
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  .card-field span {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text);
-  }
+  .card-field label { font-size: 9px; color: var(--text3); display: block; margin-bottom: 2px; }
+  .card-field span { font-family: var(--mono); font-size: 12px; color: var(--text); }
 
   .card-notes {
     font-size: 12px;
@@ -351,12 +356,7 @@
     border-top: 1px solid var(--border);
   }
 
-  .card-checks {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-  }
+  .card-checks { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
 
   .check-pill {
     font-family: var(--mono);
@@ -380,7 +380,6 @@
   }
   .delete-btn:hover { color: var(--red); }
 
-  /* EMPTY STATE */
   .empty {
     text-align: center;
     padding: 60px 20px;
@@ -391,15 +390,46 @@
     border-radius: 8px;
   }
 
-  .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
-
-  /* HIDDEN */
   .hidden { display: none !important; }
 
-  /* RR display */
   .rr-good { color: var(--green); }
   .rr-bad { color: var(--red); }
   .rr-neutral { color: var(--text2); }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  /* IMPORT AREA */
+  #import-area { display: none; }
 </style>
 </head>
 <body>
@@ -409,7 +439,32 @@
     <h1>AMD / Po3 — Backtest Journal</h1>
     <p>EUR/USD · 5-min · New York session · Pacific Time</p>
   </div>
-  <button class="btn btn-green" onclick="showTab('log'); document.getElementById('form-section').classList.remove('hidden')">+ Log Session</button>
+  <div class="header-actions">
+    <button class="btn btn-blue" onclick="exportData()">↓ Export backup</button>
+    <button class="btn btn-amber" onclick="document.getElementById('import-file').click()">↑ Import backup</button>
+    <button class="btn btn-green" onclick="showTab('log'); document.getElementById('form-section').classList.remove('hidden')">+ Log session</button>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+  </div>
+</div>
+
+<!-- BACKUP REMINDER -->
+<div class="backup-banner" id="backup-banner">
+  <p>⚠ Export a backup after each session to prevent data loss. Your journal lives in browser storage which can reset.</p>
+  <div class="backup-actions">
+    <button class="btn btn-amber" onclick="exportData()">Export now</button>
+    <button class="btn" onclick="document.getElementById('backup-banner').classList.add('hidden')">Dismiss</button>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Backtest progress</span>
+    <span id="progress-text">0 / 20 sessions</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
 </div>
 
 <!-- STATS -->
@@ -419,49 +474,47 @@
     <div class="stat-value blue" id="stat-total">0</div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Trades Taken</div>
+    <div class="stat-label">Trades taken</div>
     <div class="stat-value" id="stat-trades">0</div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Win Rate</div>
+    <div class="stat-label">Win rate</div>
     <div class="stat-value green" id="stat-winrate">—</div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Correctly Skipped</div>
+    <div class="stat-label">Correctly skipped</div>
     <div class="stat-value amber" id="stat-skipped">0</div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Progress</div>
-    <div class="stat-value" id="stat-progress">0/20</div>
+    <div class="stat-label">Avg R:R</div>
+    <div class="stat-value" id="stat-rr">—</div>
   </div>
 </div>
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="showTab('log')">Session Log</div>
-  <div class="tab" onclick="showTab('rules')">My Rules</div>
+  <div class="tab active" onclick="showTab('log')">Session log</div>
+  <div class="tab" onclick="showTab('rules')">Strategy rules</div>
+  <div class="tab" onclick="showTab('insights')">Insights</div>
 </div>
 
 <!-- LOG TAB -->
 <div id="tab-log">
-
-  <!-- FORM -->
   <div class="form-panel hidden" id="form-section">
-    <div class="form-title">New Session Entry</div>
+    <div class="form-title">New session entry</div>
 
     <div class="form-grid">
       <div class="form-group">
-        <label>Session Date</label>
+        <label>Session date</label>
         <input type="date" id="f-date">
       </div>
       <div class="form-group">
-        <label>Day type at 6:00am</label>
-        <select id="f-daytype">
+        <label>Context (midnight–6:30am)</label>
+        <select id="f-context">
           <option value="">Select...</option>
-          <option value="ranging">Ranging / sideways</option>
-          <option value="trending-bull">Trending — bullish</option>
-          <option value="trending-bear">Trending — bearish</option>
-          <option value="unclear">Unclear</option>
+          <option value="bullish">Bullish</option>
+          <option value="bearish">Bearish</option>
+          <option value="neutral">Neutral</option>
         </select>
       </div>
       <div class="form-group">
@@ -475,31 +528,22 @@
       </div>
     </div>
 
-    <!-- PRE-TRADE CHECKLIST -->
     <div class="checklist">
-      <div class="checklist-title">Pre-trade checklist — all 3 required to enter</div>
-      <label class="check-row">
-        <input type="checkbox" id="c1">
-        <span>Price swept clearly below (or above) the opening range</span>
-      </label>
-      <label class="check-row">
-        <input type="checkbox" id="c2">
-        <span>Price snapped back inside the opening range (reversal confirmed)</span>
-      </label>
-      <label class="check-row">
-        <input type="checkbox" id="c3">
-        <span>Stop loss placed below fake move, target at previous day high/low</span>
-      </label>
+      <div class="checklist-title">Pre-trade checklist — all required to enter</div>
+      <label class="check-row"><input type="checkbox" id="c0"><span>No high impact news on Forex Factory between 6:00–10:30am PT</span></label>
+      <label class="check-row"><input type="checkbox" id="c1"><span>Opening range candles flat and sideways</span></label>
+      <label class="check-row"><input type="checkbox" id="c2"><span>Prior context aligns with trade direction</span></label>
+      <label class="check-row"><input type="checkbox" id="c3"><span>Manipulation sweep sharp and aggressive, body closed back inside range</span></label>
+      <label class="check-row"><input type="checkbox" id="c4"><span>Path clear, 2:1 R:R minimum, target reachable within 2–4 hours, stop has buffer</span></label>
     </div>
 
-    <!-- OUTCOME -->
     <div style="margin-bottom:8px">
       <label style="display:block; margin-bottom:8px">Session outcome</label>
       <div class="outcome-group">
         <button class="outcome-btn" onclick="selectOutcome('win')">Win</button>
         <button class="outcome-btn" onclick="selectOutcome('loss')">Loss</button>
         <button class="outcome-btn" onclick="selectOutcome('skip')">Correctly skipped</button>
-        <button class="outcome-btn" onclick="selectOutcome('invalid')">No setup / trending</button>
+        <button class="outcome-btn" onclick="selectOutcome('invalid')">No setup / news day</button>
       </div>
     </div>
 
@@ -518,85 +562,106 @@
       </div>
       <div class="form-group">
         <label>Target (pips)</label>
-        <input type="number" id="f-target" placeholder="e.g. 24">
+        <input type="number" id="f-target" placeholder="e.g. 20">
       </div>
     </div>
 
     <div class="form-group full" style="margin-bottom:16px">
       <label>Notes — what did you observe? what would you do differently?</label>
-      <textarea id="f-notes" placeholder="e.g. Opening range was tight, manipulation swept below the low cleanly, snapped back with a strong green candle. Entered on the break back above range LOW. Price ran to previous day high for full target."></textarea>
+      <textarea id="f-notes" placeholder="e.g. Clean bearish context, tight opening range, sharp manipulation above HIGH, entered short after body closed back inside. Hit TP within 90 mins. Stop had good buffer above wick."></textarea>
     </div>
 
     <div class="form-actions">
       <button class="btn" onclick="cancelForm()">Cancel</button>
-      <button class="btn btn-green" onclick="saveSession()">Save Session</button>
+      <button class="btn btn-green" onclick="saveSession()">Save session</button>
     </div>
   </div>
 
-  <!-- SESSION LIST -->
   <div class="log-panel" id="session-list"></div>
   <div class="empty hidden" id="empty-state">
-    <div class="empty-icon">📋</div>
+    <div style="font-size:32px;margin-bottom:12px;opacity:0.4">📋</div>
     No sessions logged yet.<br>Hit "+ Log Session" after each backtest replay.
   </div>
-
 </div>
 
 <!-- RULES TAB -->
 <div id="tab-rules" class="hidden">
   <div class="form-panel">
-    <div class="form-title">Your AMD Strategy Rules</div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px">
+    <div class="form-title">Your complete AMD strategy reference</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
 
       <div>
-        <p style="font-family:var(--mono); font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px">Daily routine</p>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <span style="font-family:var(--mono);color:var(--green);font-size:12px;min-width:60px">6:00am</span>
-            <span style="font-size:13px;color:var(--text2);line-height:1.5">Open chart. Mark previous day high & low from daily candle. Observe only.</span>
+        <p style="font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Daily routine</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:12px">
+            <span style="font-family:var(--mono);color:var(--text3);font-size:12px;min-width:56px">Step 0</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Check Forex Factory for the session date. Any red news 6:00–10:30am PT → skip the day entirely.</span>
           </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <span style="font-family:var(--mono);color:var(--green);font-size:12px;min-width:60px">6:30am</span>
-            <span style="font-size:13px;color:var(--text2);line-height:1.5">Draw opening range box. Capture every candle until 7:00am.</span>
+          <div style="display:flex;gap:12px">
+            <span style="font-family:var(--mono);color:var(--green);font-size:12px;min-width:56px">6:00am</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Mark previous day high & low (solid lines). Draw yellow vertical line at midnight. Assess context from midnight to 6:30am.</span>
           </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <span style="font-family:var(--mono);color:var(--amber);font-size:12px;min-width:60px">7:00am</span>
-            <span style="font-size:13px;color:var(--text2);line-height:1.5">Watch for manipulation. Do NOT enter. Wait for the sweep and reversal.</span>
+          <div style="display:flex;gap:12px">
+            <span style="font-family:var(--mono);color:var(--green);font-size:12px;min-width:56px">6:30am</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Draw opening range box (dotted lines). Must be flat and sideways. Sloping = trending day, skip.</span>
           </div>
-          <div style="display:flex;gap:12px;align-items:flex-start">
-            <span style="font-family:var(--mono);color:var(--blue);font-size:12px;min-width:60px">8:30am+</span>
-            <span style="font-size:13px;color:var(--text2);line-height:1.5">Enter only after all 3 checklist rules confirmed. Set stop & target immediately.</span>
+          <div style="display:flex;gap:12px">
+            <span style="font-family:var(--mono);color:var(--amber);font-size:12px;min-width:56px">7:00am</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">Watch for manipulation. Do NOT enter yet. Wait for sweep AND reversal confirmation.</span>
+          </div>
+          <div style="display:flex;gap:12px">
+            <span style="font-family:var(--mono);color:var(--blue);font-size:12px;min-width:56px">Entry</span>
+            <span style="font-size:13px;color:var(--text2);line-height:1.5">First candle BODY closing back inside the range after the sweep. Wick counts for manipulation, body required for entry.</span>
           </div>
         </div>
       </div>
 
       <div>
-        <p style="font-family:var(--mono); font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px">Trend day filters</p>
+        <p style="font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Direction rule</p>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:12px">
+          <p style="font-family:var(--mono);font-size:13px;color:var(--green);margin-bottom:8px">Manipulation sweeps DOWN → trade UP (buy)</p>
+          <p style="font-family:var(--mono);font-size:13px;color:var(--red)">Manipulation sweeps UP → trade DOWN (sell)</p>
+        </div>
+        <p style="font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;margin-top:16px">Context rules</p>
         <div style="display:flex;flex-direction:column;gap:6px">
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
-            <p style="font-size:12px;color:var(--text2);margin-bottom:4px">Yesterday's candle very large → caution</p>
+            <p style="font-size:12px;color:var(--text2)"><span style="color:var(--green)">Bullish context</span> — prefer long trades, be cautious on shorts</p>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
-            <p style="font-size:12px;color:var(--text2);margin-bottom:4px">Price already moving at 6:00am → likely trending</p>
+            <p style="font-size:12px;color:var(--text2)"><span style="color:var(--red)">Bearish context</span> — prefer short trades, be cautious on longs</p>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
-            <p style="font-size:12px;color:var(--text2);margin-bottom:4px">Opening range candles slope one direction → skip</p>
+            <p style="font-size:12px;color:var(--text2)"><span style="color:var(--amber)">Neutral context</span> — ALL checklist items must be perfect, aim for 3:1 R:R</p>
           </div>
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
-            <p style="font-size:12px;color:var(--text2)">After sweep, no snapback in 2-3 candles → trending, exit plan</p>
+            <p style="font-size:12px;color:var(--text2)">Exception: bearish context + bullish signal sweeping the previous day low simultaneously = valid long</p>
           </div>
         </div>
       </div>
 
-      <div style="grid-column:1/-1; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:16px">
-        <p style="font-family:var(--mono); font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px">The golden rules</p>
+      <div style="grid-column:1/-1">
+        <p style="font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Skip signals — no trade if any apply</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Red news event on Forex Factory</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Opening range candles already sloping</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Manipulation slow and grinding, not sharp</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">No snapback after sweep in 2–3 candles</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Major level blocking path to target</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Target not reachable within 2–4 hours</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Sweep and context point same direction</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">R:R less than 2:1 (3:1 in neutral context)</p></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px"><p style="font-size:12px;color:var(--text2)">Price already trending strongly all session</p></div>
+        </div>
+      </div>
+
+      <div style="grid-column:1/-1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px">
+        <p style="font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">The golden rules</p>
         <div style="display:flex;flex-direction:column;gap:8px">
           <p style="font-size:13px;color:var(--amber)">1. A missed trade costs nothing. A bad trade costs real money.</p>
-          <p style="font-size:13px;color:var(--amber)">2. If all 3 checklist items aren't met — no trade. No exceptions.</p>
-          <p style="font-size:13px;color:var(--amber)">3. Set your stop loss before you enter. Every single time.</p>
-          <p style="font-size:13px;color:var(--amber)">4. Target minimum 2:1 reward to risk on every trade.</p>
-          <p style="font-size:13px;color:var(--amber)">5. Complete 20 backtested sessions before trading live.</p>
+          <p style="font-size:13px;color:var(--amber)">2. All 5 checklist items must pass — no exceptions, no "close enough".</p>
+          <p style="font-size:13px;color:var(--amber)">3. Set stop and target before entering. Every single time.</p>
+          <p style="font-size:13px;color:var(--amber)">4. Once in a trade — only exit at stop or target. Not because it feels uncomfortable.</p>
+          <p style="font-size:13px;color:var(--amber)">5. Export your journal backup after every session.</p>
         </div>
       </div>
 
@@ -604,35 +669,108 @@
   </div>
 </div>
 
+<!-- INSIGHTS TAB -->
+<div id="tab-insights" class="hidden">
+  <div class="form-panel">
+    <div class="form-title">Session insights</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px" id="insights-content">
+      <p style="color:var(--text3);font-size:13px;grid-column:1/-1">Log at least 5 sessions to see insights.</p>
+    </div>
+  </div>
+</div>
+
 <script>
-  let sessions = JSON.parse(localStorage.getItem('amd-journal') || '[]');
+  const STORAGE_KEY = 'amd-journal-v2';
+  let sessions = [];
   let selectedOutcome = '';
 
-  function save() {
-    localStorage.setItem('amd-journal', JSON.stringify(sessions));
-    render();
+  // Load from localStorage
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) sessions = JSON.parse(raw);
+    } catch(e) {
+      sessions = [];
+    }
+  }
+
+  function saveToStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+    } catch(e) {
+      console.error('Storage save failed:', e);
+    }
+  }
+
+  // EXPORT
+  function exportData() {
+    const data = {
+      version: 2,
+      exported: new Date().toISOString(),
+      sessions: sessions
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `amd-journal-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // IMPORT
+  function importData(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (data.sessions && Array.isArray(data.sessions)) {
+          const merge = confirm(`Import ${data.sessions.length} sessions? This will merge with your existing ${sessions.length} sessions.`);
+          if (merge) {
+            const existingIds = new Set(sessions.map(s => s.id));
+            const newSessions = data.sessions.filter(s => !existingIds.has(s.id));
+            sessions = [...sessions, ...newSessions].sort((a, b) => new Date(b.date) - new Date(a.date));
+            saveToStorage();
+            render();
+            alert(`Imported ${newSessions.length} new sessions successfully.`);
+          }
+        } else {
+          alert('Invalid backup file format.');
+        }
+      } catch(err) {
+        alert('Could not read backup file. Make sure it is a valid AMD journal export.');
+      }
+    };
+    reader.readAsText(file);
+    input.value = '';
   }
 
   function showTab(tab) {
-    document.getElementById('tab-log').classList.toggle('hidden', tab !== 'log');
-    document.getElementById('tab-rules').classList.toggle('hidden', tab !== 'rules');
-    document.querySelectorAll('.tab').forEach((t, i) => {
-      t.classList.toggle('active', (i === 0 && tab === 'log') || (i === 1 && tab === 'rules'));
+    ['log','rules','insights'].forEach(t => {
+      document.getElementById('tab-' + t).classList.toggle('hidden', t !== tab);
     });
+    document.querySelectorAll('.tab').forEach((el, i) => {
+      el.classList.toggle('active', ['log','rules','insights'][i] === tab);
+    });
+    if (tab === 'insights') renderInsights();
   }
 
   function selectOutcome(outcome) {
     selectedOutcome = outcome;
     document.querySelectorAll('.outcome-btn').forEach(b => {
       b.className = 'outcome-btn';
-      if (b.textContent.toLowerCase().includes(outcome) || 
-          (outcome === 'skip' && b.textContent.includes('skip')) ||
-          (outcome === 'invalid' && b.textContent.includes('trending'))) {
+      const label = b.textContent.toLowerCase();
+      if ((outcome === 'win' && label === 'win') ||
+          (outcome === 'loss' && label === 'loss') ||
+          (outcome === 'skip' && label.includes('skip')) ||
+          (outcome === 'invalid' && label.includes('no setup'))) {
         b.classList.add('selected-' + outcome);
       }
     });
     const showTrade = outcome === 'win' || outcome === 'loss';
-    document.getElementById('trade-fields').style.opacity = showTrade ? '1' : '0.3';
+    document.getElementById('trade-fields').style.opacity = showTrade ? '1' : '0.4';
   }
 
   function cancelForm() {
@@ -641,14 +779,13 @@
   }
 
   function resetForm() {
-    ['f-date','f-daytype','f-range','f-direction','f-stop','f-target','f-notes'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.value = '';
-      else el.value = '';
+    ['f-date','f-context','f-range','f-direction','f-stop','f-target','f-notes'].forEach(id => {
+      document.getElementById(id).value = '';
     });
-    ['c1','c2','c3'].forEach(id => document.getElementById(id).checked = false);
+    ['c0','c1','c2','c3','c4'].forEach(id => document.getElementById(id).checked = false);
     selectedOutcome = '';
     document.querySelectorAll('.outcome-btn').forEach(b => b.className = 'outcome-btn');
+    document.getElementById('trade-fields').style.opacity = '1';
   }
 
   function saveSession() {
@@ -658,69 +795,66 @@
 
     const stop = parseFloat(document.getElementById('f-stop').value) || 0;
     const target = parseFloat(document.getElementById('f-target').value) || 0;
-    const rr = stop > 0 && target > 0 ? (target / stop).toFixed(1) : null;
+    const rr = stop > 0 && target > 0 ? Math.round((target / stop) * 10) / 10 : null;
 
     const session = {
       id: Date.now(),
       date,
-      daytype: document.getElementById('f-daytype').value,
+      context: document.getElementById('f-context').value,
       range: document.getElementById('f-range').value,
-      checks: [
-        document.getElementById('c1').checked,
-        document.getElementById('c2').checked,
-        document.getElementById('c3').checked
-      ],
+      checks: ['c0','c1','c2','c3','c4'].map(id => document.getElementById(id).checked),
       outcome: selectedOutcome,
       direction: document.getElementById('f-direction').value,
-      stop,
-      target,
-      rr,
+      stop, target, rr,
       notes: document.getElementById('f-notes').value
     };
 
     sessions.unshift(session);
-    save();
+    saveToStorage();
     cancelForm();
+    render();
+
+    // Auto-prompt export reminder after every 5 sessions
+    if (sessions.length % 5 === 0) {
+      setTimeout(() => {
+        if (confirm(`You have ${sessions.length} sessions logged. Export a backup now to keep them safe?`)) {
+          exportData();
+        }
+      }, 500);
+    }
   }
 
   function deleteSession(id) {
     if (!confirm('Delete this session?')) return;
     sessions = sessions.filter(s => s.id !== id);
-    save();
+    saveToStorage();
+    render();
   }
 
-  const checkLabels = [
-    'Price swept range',
-    'Snapped back inside',
-    'Stop & target set'
-  ];
-
-  const daytypeLabels = {
-    'ranging': 'Ranging', 'trending-bull': 'Trending ↑',
-    'trending-bear': 'Trending ↓', 'unclear': 'Unclear', '': '—'
-  };
-
-  const rangeLabels = {
-    'tight': 'Tight (good)', 'moderate': 'Moderate', 'wide': 'Wide (bad)', '': '—'
-  };
+  const checkLabels = ['No news', 'Flat range', 'Context aligns', 'Clean sweep', 'R:R valid'];
+  const contextLabels = { bullish: 'Bullish ↑', bearish: 'Bearish ↓', neutral: 'Neutral', '': '—' };
+  const rangeLabels = { tight: 'Tight (good)', moderate: 'Moderate', wide: 'Wide (bad)', '': '—' };
 
   function render() {
-    // Stats
     const total = sessions.length;
     const trades = sessions.filter(s => s.outcome === 'win' || s.outcome === 'loss').length;
     const wins = sessions.filter(s => s.outcome === 'win').length;
-    const skipped = sessions.filter(s => s.outcome === 'skip').length;
+    const skipped = sessions.filter(s => s.outcome === 'skip' || s.outcome === 'invalid').length;
     const winrate = trades > 0 ? Math.round((wins / trades) * 100) + '%' : '—';
+    const rrVals = sessions.filter(s => s.rr).map(s => s.rr);
+    const avgRR = rrVals.length > 0 ? (rrVals.reduce((a,b) => a+b, 0) / rrVals.length).toFixed(1) + ':1' : '—';
 
     document.getElementById('stat-total').textContent = total;
     document.getElementById('stat-trades').textContent = trades;
     document.getElementById('stat-winrate').textContent = winrate;
     document.getElementById('stat-winrate').className = 'stat-value ' + (trades > 0 ? (wins/trades >= 0.5 ? 'green' : 'red') : 'green');
     document.getElementById('stat-skipped').textContent = skipped;
-    document.getElementById('stat-progress').textContent = total + '/20';
-    document.getElementById('stat-progress').className = 'stat-value ' + (total >= 20 ? 'green' : total >= 10 ? 'amber' : '');
+    document.getElementById('stat-rr').textContent = avgRR;
 
-    // List
+    const pct = Math.min(100, Math.round((total / 20) * 100));
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${total} / 20 sessions`;
+
     const list = document.getElementById('session-list');
     const empty = document.getElementById('empty-state');
 
@@ -732,7 +866,7 @@
 
     empty.classList.add('hidden');
     list.innerHTML = sessions.map(s => {
-      const rrClass = s.rr ? (parseFloat(s.rr) >= 2 ? 'rr-good' : 'rr-bad') : 'rr-neutral';
+      const rrClass = s.rr ? (s.rr >= 2 ? 'rr-good' : 'rr-bad') : 'rr-neutral';
       const checksHtml = checkLabels.map((l, i) =>
         `<span class="check-pill ${s.checks[i] ? 'checked' : ''}">${l}</span>`
       ).join('');
@@ -748,17 +882,71 @@
         </div>
         <div class="card-checks">${checksHtml}</div>
         <div class="card-body">
-          <div class="card-field"><label>Day type</label><span>${daytypeLabels[s.daytype] || '—'}</span></div>
+          <div class="card-field"><label>Context</label><span>${contextLabels[s.context] || '—'}</span></div>
           <div class="card-field"><label>Opening range</label><span>${rangeLabels[s.range] || '—'}</span></div>
           <div class="card-field"><label>Direction</label><span>${s.direction || '—'}</span></div>
-          <div class="card-field"><label>R:R ratio</label><span class="${rrClass}">${s.rr ? s.rr + ':1' : '—'}</span></div>
+          <div class="card-field"><label>R:R</label><span class="${rrClass}">${s.rr ? s.rr + ':1' : '—'}</span></div>
         </div>
         ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
       </div>`;
     }).join('');
   }
 
-  // Set today's date as default
+  function renderInsights() {
+    const el = document.getElementById('insights-content');
+    if (sessions.length < 5) {
+      el.innerHTML = '<p style="color:var(--text3);font-size:13px;grid-column:1/-1">Log at least 5 sessions to see insights.</p>';
+      return;
+    }
+
+    const trades = sessions.filter(s => s.outcome === 'win' || s.outcome === 'loss');
+    const wins = trades.filter(s => s.outcome === 'win');
+    const losses = trades.filter(s => s.outcome === 'loss');
+
+    const bullishTrades = trades.filter(s => s.direction && s.direction.includes('Long'));
+    const bearishTrades = trades.filter(s => s.direction && s.direction.includes('Short'));
+    const bullishWins = bullishTrades.filter(s => s.outcome === 'win').length;
+    const bearishWins = bearishTrades.filter(s => s.outcome === 'win').length;
+
+    const contextWinRates = ['bullish','bearish','neutral'].map(c => {
+      const ct = trades.filter(s => s.context === c);
+      const cw = ct.filter(s => s.outcome === 'win').length;
+      return { context: c, trades: ct.length, winrate: ct.length > 0 ? Math.round((cw/ct.length)*100) : null };
+    });
+
+    el.innerHTML = `
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Direction performance</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Long trades</span><span style="font-family:var(--mono);font-size:13px;color:var(--green)">${bullishTrades.length > 0 ? Math.round((bullishWins/bullishTrades.length)*100) + '% win' : '—'}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Short trades</span><span style="font-family:var(--mono);font-size:13px;color:var(--green)">${bearishTrades.length > 0 ? Math.round((bearishWins/bearishTrades.length)*100) + '% win' : '—'}</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Win rate by context</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${contextWinRates.map(c => `
+            <div style="display:flex;justify-content:space-between">
+              <span style="font-size:13px;color:var(--text2)">${c.context.charAt(0).toUpperCase() + c.context.slice(1)} (${c.trades})</span>
+              <span style="font-family:var(--mono);font-size:13px;color:${c.winrate >= 50 ? 'var(--green)' : c.winrate !== null ? 'var(--red)' : 'var(--text3)'}">${c.winrate !== null ? c.winrate + '%' : '—'}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Session breakdown</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Total sessions</span><span style="font-family:var(--mono);font-size:13px">${sessions.length}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Trades taken</span><span style="font-family:var(--mono);font-size:13px">${trades.length}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Days sat out</span><span style="font-family:var(--mono);font-size:13px;color:var(--amber)">${sessions.length - trades.length}</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text2)">Sit-out rate</span><span style="font-family:var(--mono);font-size:13px;color:var(--amber)">${Math.round(((sessions.length - trades.length)/sessions.length)*100)}%</span></div>
+        </div>
+      </div>`;
+  }
+
+  // Init
+  loadFromStorage();
   document.getElementById('f-date').valueAsDate = new Date();
   render();
 </script>
